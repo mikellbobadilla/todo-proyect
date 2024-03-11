@@ -1,11 +1,10 @@
-import { ListOfTodos } from './components/ListOfTodos'
+import { RouterProvider } from 'react-router-dom'
+import { router } from './routes/routes'
 
 function App() {
 
   return (
-    <>
-      <ListOfTodos />
-    </>
+    <RouterProvider router={router} />
   )
 }
 
