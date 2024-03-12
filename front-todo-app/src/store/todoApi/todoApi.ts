@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { TodoId, TodoResponse } from '../../types/todo'
+import { Todo, TodoId, TodoResponse, TodoWithId } from '../../types/todo'
 
 export const todoApi = createApi({
     reducerPath: 'todoApi',
@@ -16,8 +16,18 @@ export const todoApi = createApi({
                 method: 'DELETE'
             }),
             invalidatesTags: ['GetTodos']
-        })
+        }),
+        createTodo: builder.mutation<TodoWithId, Todo>(
+            {
+                query: (todo) => ({
+                    url: '/todos',
+                    method: 'POST',
+                    body: todo
+                }),
+                invalidatesTags: ['GetTodos']
+            }
+        )
     })
 })
 
-export const { useGetTodosQuery, useDeleteTodoMutation } = todoApi
+export const { useGetTodosQuery, useDeleteTodoMutation, useCreateTodoMutation } = todoApi
