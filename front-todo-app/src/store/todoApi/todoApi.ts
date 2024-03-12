@@ -23,7 +23,7 @@ export const todoApi = createApi({
                 url: `/todos/${id}`,
                 method: 'DELETE'
             }),
-            invalidatesTags: (_, error, id) => [
+            invalidatesTags: (_, _error, id) => [
                 { type: 'GetTodos', id },
                 { type: 'GetTodos', id: 'PARTIAL-LIST' },
             ]
