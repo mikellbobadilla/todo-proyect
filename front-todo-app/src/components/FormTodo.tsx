@@ -34,7 +34,7 @@ export function FormTodo() {
     }
 
     return (
-        <section>
+        <section className='w-full max-w-lg mx-auto'>
             <h2 className='text-xl lg:text-2xl text-sky-500 font-semibold'>
                 Create Todo
             </h2>
