@@ -62,7 +62,7 @@ export function ListOfTodos() {
                 </h2>
                 <p>
                     Todos:
-                    <Badge>{data?.content.length}</Badge>
+                    <Badge>{data?.totalElements}</Badge>
                 </p>
             </header>
             <div>
