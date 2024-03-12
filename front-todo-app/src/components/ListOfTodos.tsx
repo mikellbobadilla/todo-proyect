@@ -1,5 +1,6 @@
 import { toast } from 'sonner'
-import { useDeleteTodoMutation, useGetTodosQuery } from '../store/todoApi/todoApi'
+import { useDeleteTodoMutation, useGetTodosQuery, useSetIsDoneTodoMutation } from '../store/todoApi/todoApi'
+import { TodoId, TodoWithId } from '../types/todo'
 import { Badge } from './Badge'
 import { Spinner } from './Spinner'
 import { TodoCard } from './TodoCard'
@@ -8,6 +9,33 @@ export function ListOfTodos() {
 
     const { data, isLoading, isError } = useGetTodosQuery()
     const [deleteTodo] = useDeleteTodoMutation()
+
+    const handleDeleteTodo = (todo: TodoWithId) => {
+        deleteTodo(todo.id).unwrap()
+            .then(() => {
+                toast.info(`Todo "${todo.title}" deleted`)
+                return
+            })
+            .catch(() => {
+                toast.error('Error deleting todo')
+                return
+            })
+    }
+
+    const [updateTodo] = useSetIsDoneTodoMutation()
+
+    const handleChange = (id: TodoId, isDone: boolean) => {
+        updateTodo({ id, isDone })
+            .unwrap()
+            .then(() => {
+                toast.info(`Todo updated`)
+                return
+            })
+            .catch(() => {
+                toast.error('Error updating todo')
+                return
+            })
+    }
 
     if (isError) {
         toast.error(' Check your internet connection and try again.')
@@ -50,7 +78,8 @@ export function ListOfTodos() {
                                     <TodoCard
                                         key={item.id}
                                         todo={item}
-                                        deleteTodo={() => deleteTodo(item.id)}
+                                        onChange={(event) => handleChange(item.id, event.target.checked)}
+                                        deleteTodo={() => handleDeleteTodo(item)}
                                     />
                                 ))
                             }
