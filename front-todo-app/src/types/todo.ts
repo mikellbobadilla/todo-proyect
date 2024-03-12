@@ -16,4 +16,6 @@ export interface TodoResponse {
     pageNumber: number
     pageSize: number
     totalElements: number
+    hasNext: boolean
+    hasPrevious: boolean
 }
