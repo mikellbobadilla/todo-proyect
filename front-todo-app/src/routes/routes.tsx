@@ -1,4 +1,5 @@
 import { createBrowserRouter, redirect } from 'react-router-dom'
+import { FormTodo } from '../components/FormTodo'
 import { ListOfTodos } from '../components/ListOfTodos'
 import { RootPage } from '../pages/RootPage'
 
@@ -21,7 +22,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'add-todo',
-                element: <h1>Add todo</h1>
+                element: <FormTodo />
             }
         ]
     }
