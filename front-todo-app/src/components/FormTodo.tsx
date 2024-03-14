@@ -17,18 +17,18 @@ export function FormTodo() {
         const isDone = form.get('isDone') === 'on' ? true : false
         const todo = { title, description, targetDate, isDone }
 
-        createTodo(todo).unwrap()
-            .then((payload) => {
-                toast.success(`Todo "${payload.title}" created`)
+        createTodo(todo)
+            .then(() => {
+                toast.success(`Todo created`)
                 navigate('/todos')
                 return
             })
             .catch((error) => {
                 if (error.status === 500) {
                     toast.error("Can't create todo, check your connection")
-                    return
+                } else {
+                    toast.error('Error creating todo')
                 }
-                toast.error('Error creating todo')
                 return
             })
     }
