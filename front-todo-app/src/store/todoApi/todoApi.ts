@@ -8,14 +8,12 @@ export const todoApi = createApi({
     endpoints: builder => ({
         getTodos: builder.query<TodoResponse, number | void>({
             query: (page = 1) => `/todos?page=${page}`,
-            providesTags: (result) =>
-                result ? [
-                    // Provides a tag for each post in the current page,
-                    // as well as the 'PARTIAL-LIST' tag.
+            providesTags: (result) => result
+                ? [
                     ...result.content.map(({ id }) => ({ type: 'GetTodos' as const, id })),
-                    { type: 'GetTodos', id: 'PARTIAL-LIST' },
+                    { type: 'GetTodos', id: 'LIST' }
                 ]
-                    : [{ type: 'GetTodos', id: 'PARTIAL-LIST' }]
+                : [{ type: 'GetTodos', id: 'LIST' }]
 
         }),
         deleteTodo: builder.mutation<void, TodoId>({
@@ -23,10 +21,7 @@ export const todoApi = createApi({
                 url: `/todos/${id}`,
                 method: 'DELETE'
             }),
-            invalidatesTags: (_, _error, id) => [
-                { type: 'GetTodos', id },
-                { type: 'GetTodos', id: 'PARTIAL-LIST' },
-            ]
+            invalidatesTags: (_, __, id) => ([{ type: 'GetTodos', id }])
         }),
         createTodo: builder.mutation<TodoWithId, Todo>(
             {
@@ -35,7 +30,7 @@ export const todoApi = createApi({
                     method: 'POST',
                     body: todo
                 }),
-                invalidatesTags: ['GetTodos']
+                invalidatesTags: [{ type: 'GetTodos', id: 'LIST' }]
             }
         ),
         setIsDoneTodo: builder.mutation<void, { id: TodoId, isDone: boolean }>({
@@ -44,9 +39,10 @@ export const todoApi = createApi({
                 method: 'PATCH',
                 body: { isDone: data.isDone }
             }),
-            invalidatesTags: ['GetTodos']
-        })
-    })
+            invalidatesTags: (_, __, { id }) => ([{ type: 'GetTodos', id }]),
+
+        }),
+    }),
 })
 
 export const { useGetTodosQuery, useDeleteTodoMutation, useCreateTodoMutation, useSetIsDoneTodoMutation } = todoApi
