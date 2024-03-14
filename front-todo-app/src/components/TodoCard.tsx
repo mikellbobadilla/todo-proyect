@@ -1,7 +1,7 @@
 import { TodoWithId } from '../types/todo'
 import { TrashIcon } from './icons/TrashIcons'
 
-export function TodoCard({ todo, deleteTodo, onChange }: React.PropsWithChildren<{ todo: TodoWithId, deleteTodo: () => void, onChange: React.ChangeEventHandler<HTMLInputElement> }>) {
+export function TodoCard({ todo, deleteTodo, onChange, deleteLoading = false }: React.PropsWithChildren<{ todo: TodoWithId, deleteTodo: () => void, onChange: React.ChangeEventHandler<HTMLInputElement>, deleteLoading: boolean }>) {
     return (
         <li className='flex flex-col border rounded-lg p-2 relative border-gray-700'>
             <h4 className='text-xl font-semibold text-sky-300 mb-3'>
@@ -16,6 +16,7 @@ export function TodoCard({ todo, deleteTodo, onChange }: React.PropsWithChildren
                 </label>
             </span>
             <button
+                disabled={deleteLoading}
                 onClick={deleteTodo}
                 className='absolute top-2 right-2 text-red-300 hover:text-red-500 transition-all'
             >
